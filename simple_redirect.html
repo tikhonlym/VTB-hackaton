@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTB Hackaton - Открыть в приложении</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .app-link {
+            display: block;
+            padding: 20px;
+            margin: 20px 0;
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .app-link:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: rgba(23, 162, 184, 0.8);
+        }
+        .instructions {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 VTB Hackaton</h1>
+        <p>Открытие интервью в мобильном приложении</p>
+        
+        <div class="status">
+            Нажмите на кнопку ниже для открытия приложения
+        </div>
+        
+        <a href="vtbhackaton://interview/123" class="app-link">
+            📱 ОТКРЫТЬ В ПРИЛОЖЕНИИ (ID: 123)
+        </a>
+        
+        <a href="vtbhackaton://interview/456" class="app-link">
+            📱 ОТКРЫТЬ В ПРИЛОЖЕНИИ (ID: 456)
+        </a>
+        
+        <a href="vtbhackaton://interview/789" class="app-link">
+            📱 ОТКРЫТЬ В ПРИЛОЖЕНИИ (ID: 789)
+        </a>
+        
+        <div class="instructions">
+            <h3>📋 Инструкции:</h3>
+            <ol>
+                <li>Убедитесь, что приложение VTB Hackaton установлено</li>
+                <li>Нажмите на любую кнопку выше</li>
+                <li>Выберите "Открыть в приложении" если появится выбор</li>
+                <li>Приложение откроется с соответствующим ID интервью</li>
+            </ol>
+            
+            <h3>🔗 Для Telegram:</h3>
+            <p>Скопируйте и отправьте эту ссылку:</p>
+            <code style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; display: block; margin: 10px 0;">
+                vtbhackaton://interview/123
+            </code>
+        </div>
+    </div>
+
+    <script>
+        // Автоматически пытаемся открыть приложение при загрузке страницы
+        setTimeout(() => {
+            window.location.href = "vtbhackaton://interview/123";
+        }, 1000);
+    </script>
+</body>
+</html>
+

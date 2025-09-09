@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/fallbackFragment">
+
+    <fragment
+        android:id="@+id/chooseModeFragment"
+        android:name="com.preload.vtb_hackaton.feature.choosemode.ChooseModeFragment"
+        android:label="ChooseModeFragment" >
+        <action
+            android:id="@+id/action_chooseModeFragment_to_interviewFragment"
+            app:destination="@id/interviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/interviewFragment"
+        android:name="com.preload.vtb_hackaton.feature.interview.InterviewFragment"
+        android:label="InterviewFragment" >
+        <action
+            android:id="@+id/action_interviewFragment_to_interviewResultFragment"
+            app:destination="@id/interviewResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/interviewResultFragment"
+        android:name="com.preload.vtb_hackaton.feature.interviewresult.InterviewResultFragment"
+        android:label="InterviewResultFragment" />
+    <fragment
+        android:id="@+id/fallbackFragment"
+        android:name="com.preload.vtb_hackaton.feature.fallback.FallbackFragment"
+        android:label="FallbackFragment" >
+        <action
+            android:id="@+id/action_fallbackFragment_to_chooseModeFragment"
+            app:destination="@id/chooseModeFragment" />
+    </fragment>
+    
+    <!-- Глобальные действия навигации для безопасной навигации из любого destination -->
+    <action
+        android:id="@+id/action_global_chooseModeFragment"
+        app:destination="@id/chooseModeFragment" />
+    <action
+        android:id="@+id/action_global_fallbackFragment"
+        app:destination="@id/fallbackFragment" />
+</navigation>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Открыть в приложении VTB Hackaton</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .app-link {
+            display: block;
+            padding: 20px;
+            margin: 20px 0;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .app-link:hover {
+            background: #0056b3;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 VTB Hackaton</h1>
+        <p>Открытие интервью в мобильном приложении</p>
+        
+        <div id="status" class="status info">
+            Пытаемся открыть приложение...
+        </div>
+        
+        <a href="vtbhackaton://interview/123" class="app-link" id="appLink" style="display: none;">
+            📱 Открыть в приложении
+        </a>
+        
+        <div id="fallback" style="display: none;">
+            <h3>Альтернативные способы:</h3>
+            <a href="intent://interview/123#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end" class="app-link">
+                🔗 Intent URL (для Telegram)
+            </a>
+            <a href="https://vtbhackaton.app?id=123" class="app-link" style="background: #28a745;">
+                🌐 HTTPS ссылка
+            </a>
+        </div>
+        
+        <div id="instructions" style="display: none; margin-top: 20px; text-align: left;">
+            <h3>📋 Инструкции:</h3>
+            <ol>
+                <li>Убедитесь, что приложение VTB Hackaton установлено</li>
+                <li>Нажмите на кнопку выше</li>
+                <li>Выберите "Открыть в приложении"</li>
+                <li>Если не работает, попробуйте Intent URL</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Получаем ID из URL параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const interviewId = urlParams.get('id') || '123';
+        
+        // Обновляем ссылки с правильным ID
+        document.getElementById('appLink').href = `vtbhackaton://interview/${interviewId}`;
+        document.querySelector('a[href*="intent://"]').href = `intent://interview/${interviewId}#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end`;
+        document.querySelector('a[href*="https://vtbhackaton.app"]').href = `https://vtbhackaton.app?id=${interviewId}`;
+        
+        // Пытаемся открыть приложение
+        const appUrl = `vtbhackaton://interview/${interviewId}`;
+        const statusDiv = document.getElementById('status');
+        const appLink = document.getElementById('appLink');
+        const fallback = document.getElementById('fallback');
+        const instructions = document.getElementById('instructions');
+        
+        // Показываем кнопку через 1 секунду
+        setTimeout(() => {
+            appLink.style.display = 'block';
+            fallback.style.display = 'block';
+            instructions.style.display = 'block';
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Если приложение не открылось автоматически, нажмите на кнопку выше';
+        }, 1000);
+        
+        // Пытаемся открыть приложение
+        try {
+            window.location.href = appUrl;
+        } catch (e) {
+            console.log('Error opening app:', e);
+        }
+        
+        // Проверяем, вернулись ли мы на страницу (значит приложение не открылось)
+        let startTime = Date.now();
+        window.addEventListener('focus', () => {
+            if (Date.now() - startTime > 2000) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Приложение не открылось. Попробуйте кнопки ниже.';
+            }
+        });
+    </script>
+</body>
+</html>
+

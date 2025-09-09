@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTB Hackaton - Открыть в приложении</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .app-link {
+            display: block;
+            padding: 20px;
+            margin: 20px 0;
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .app-link:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success {
+            background: rgba(40, 167, 69, 0.8);
+        }
+        .error {
+            background: rgba(220, 53, 69, 0.8);
+        }
+        .info {
+            background: rgba(23, 162, 184, 0.8);
+        }
+        .countdown {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .instructions {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 VTB Hackaton</h1>
+        <p>Открытие интервью в мобильном приложении</p>
+        
+        <div id="status" class="status info">
+            Автоматическое открытие приложения...
+        </div>
+        
+        <div id="countdown" class="countdown" style="display: none;">
+            <span id="timer">3</span> секунд до открытия приложения
+        </div>
+        
+        <a href="#" class="app-link" id="appLink" style="display: none;">
+            📱 ОТКРЫТЬ В ПРИЛОЖЕНИИ
+        </a>
+        
+        <div id="fallback" style="display: none;">
+            <h3>Альтернативные способы:</h3>
+            <a href="#" class="app-link" id="intentLink">
+                🔗 Intent URL (для Telegram)
+            </a>
+            <a href="#" class="app-link" id="customLink">
+                🎯 Custom Scheme
+            </a>
+        </div>
+        
+        <div id="instructions" class="instructions" style="display: none;">
+            <h3>📋 Инструкции:</h3>
+            <ol>
+                <li>Убедитесь, что приложение VTB Hackaton установлено</li>
+                <li>Нажмите на кнопку "ОТКРЫТЬ В ПРИЛОЖЕНИИ"</li>
+                <li>Выберите "Открыть в приложении" если появится выбор</li>
+                <li>Если не работает, попробуйте Intent URL</li>
+                <li>Скопируйте ссылку и вставьте в адресную строку браузера</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Получаем ID из URL параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const interviewId = urlParams.get('id') || '123';
+        
+        // Создаем ссылки
+        const appUrl = `vtbhackaton://interview/${interviewId}`;
+        const intentUrl = `intent://interview/${interviewId}#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end`;
+        const customUrl = `vtbhackaton://interview/${interviewId}`;
+        
+        // Обновляем ссылки
+        document.getElementById('appLink').href = appUrl;
+        document.getElementById('intentLink').href = intentUrl;
+        document.getElementById('customLink').href = customUrl;
+        
+        const statusDiv = document.getElementById('status');
+        const countdownDiv = document.getElementById('countdown');
+        const timerSpan = document.getElementById('timer');
+        const appLink = document.getElementById('appLink');
+        const fallback = document.getElementById('fallback');
+        const instructions = document.getElementById('instructions');
+        
+        let countdown = 3;
+        let redirectAttempted = false;
+        
+        // Функция попытки редиректа
+        function attemptRedirect() {
+            if (redirectAttempted) return;
+            redirectAttempted = true;
+            
+            try {
+                // Пытаемся открыть приложение
+                window.location.href = appUrl;
+                
+                // Показываем статус
+                statusDiv.className = 'status info';
+                statusDiv.textContent = 'Пытаемся открыть приложение...';
+                
+                // Через 2 секунды показываем кнопки
+                setTimeout(() => {
+                    showFallback();
+                }, 2000);
+                
+            } catch (e) {
+                console.log('Error opening app:', e);
+                showFallback();
+            }
+        }
+        
+        // Показать альтернативные способы
+        function showFallback() {
+            appLink.style.display = 'block';
+            fallback.style.display = 'block';
+            instructions.style.display = 'block';
+            statusDiv.className = 'status error';
+            statusDiv.textContent = 'Приложение не открылось автоматически. Попробуйте кнопки ниже.';
+        }
+        
+        // Обратный отсчет
+        function startCountdown() {
+            countdownDiv.style.display = 'block';
+            
+            const timer = setInterval(() => {
+                countdown--;
+                timerSpan.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    countdownDiv.style.display = 'none';
+                    attemptRedirect();
+                }
+            }, 1000);
+        }
+        
+        // Запускаем обратный отсчет
+        startCountdown();
+        
+        // Проверяем, вернулись ли мы на страницу
+        let startTime = Date.now();
+        window.addEventListener('focus', () => {
+            if (Date.now() - startTime > 3000) {
+                showFallback();
+            }
+        });
+        
+        // Дополнительная проверка через visibility API
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && Date.now() - startTime > 3000) {
+                showFallback();
+            }
+        });
+        
+        // Принудительный редирект при клике на кнопку
+        appLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = appUrl;
+        });
+        
+        // Копирование ссылки в буфер обмена
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'Ссылка скопирована в буфер обмена!';
+            }).catch(() => {
+                // Fallback для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'Ссылка скопирована в буфер обмена!';
+            });
+        }
+        
+        // Добавляем кнопку копирования
+        const copyButton = document.createElement('a');
+        copyButton.href = '#';
+        copyButton.className = 'app-link';
+        copyButton.innerHTML = '📋 Скопировать ссылку';
+        copyButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            copyToClipboard(appUrl);
+        });
+        
+        fallback.appendChild(copyButton);
+    </script>
+</body>
+</html>
+

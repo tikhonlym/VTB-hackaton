@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест Deep Links</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .link-container {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .link {
+            display: block;
+            padding: 15px;
+            margin: 10px 0;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .link:hover {
+            background: #0056b3;
+        }
+        .description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .custom-scheme {
+            background: #28a745;
+        }
+        .custom-scheme:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Тест Deep Links для VTB Hackaton</h1>
+    
+    <div class="link-container">
+        <h3>Custom Scheme (работает сразу)</h3>
+        <div class="description">Эти ссылки должны открывать приложение напрямую</div>
+        
+        <a href="vtbhackaton://interview/123" class="link custom-scheme">
+            vtbhackaton://interview/123
+        </a>
+        
+        <a href="vtbhackaton://interview/456" class="link custom-scheme">
+            vtbhackaton://interview/456
+        </a>
+        
+        <a href="vtbhackaton://interview/789" class="link custom-scheme">
+            vtbhackaton://interview/789
+        </a>
+    </div>
+
+    <div class="link-container">
+        <h3>Intent URL (для Telegram)</h3>
+        <div class="description">Эти ссылки должны работать в Telegram и мессенджерах</div>
+        
+        <a href="intent://interview/123#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end" class="link" style="background: #ff6b35;">
+            Intent URL для ID 123
+        </a>
+        
+        <a href="intent://interview/456#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end" class="link" style="background: #ff6b35;">
+            Intent URL для ID 456
+        </a>
+        
+        <a href="intent://interview/789#Intent;scheme=vtbhackaton;package=com.preload.vtb_hackaton;end" class="link" style="background: #ff6b35;">
+            Intent URL для ID 789
+        </a>
+    </div>
+
+    <div class="link-container">
+        <h3>HTTPS ссылки (нужен настроенный домен)</h3>
+        <div class="description">Эти ссылки работают только если настроен домен vtbhackaton.app</div>
+        
+        <a href="https://vtbhackaton.app?id=123" class="link">
+            https://vtbhackaton.app?id=123
+        </a>
+        
+        <a href="https://vtbhackaton.app?id=456" class="link">
+            https://vtbhackaton.app?id=456
+        </a>
+        
+        <a href="https://vtbhackaton.app?id=789" class="link">
+            https://vtbhackaton.app?id=789
+        </a>
+        
+        <a href="https://vtbhackaton.app/interview/123" class="link">
+            https://vtbhackaton.app/interview/123
+        </a>
+    </div>
+
+    <div class="link-container">
+        <h3>📱 Инструкции для тестирования:</h3>
+        <ol>
+            <li><strong>Установите приложение</strong> на устройство</li>
+            <li><strong>Откройте эту страницу</strong> в браузере на устройстве</li>
+            <li><strong>Нажмите на ссылку</strong> - должно открыться приложение</li>
+            <li><strong>Проверьте Toast</strong> - должен показаться ID</li>
+        </ol>
+        
+        <h4>Для тестирования из Telegram:</h4>
+        <ol>
+            <li>Скопируйте ссылку <code>vtbhackaton://interview/123</code></li>
+            <li>Отправьте её в Telegram</li>
+            <li>Нажмите на ссылку в Telegram</li>
+            <li>Выберите "Открыть в приложении"</li>
+        </ol>
+    </div>
+
+    <div class="link-container">
+        <h3>🐛 Отладка:</h3>
+        <p>Если ссылки не работают, проверьте:</p>
+        <ul>
+            <li>Приложение установлено и запускается</li>
+            <li>В настройках Android разрешено открытие ссылок для вашего приложения</li>
+            <li>Логи в Android Studio: <code>adb logcat | grep MainActivity</code></li>
+        </ul>
+    </div>
+</body>
+</html>
